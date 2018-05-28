@@ -98,22 +98,10 @@ function Parse-ProxyDirective
         throw "Malformed proxy directive [$Directive]"
     }
     
-    return New-ProxyServerObject -Type $Match.Groups["type"].Value -Server $Match.Groups["server"].Value -Port $Match.Groups["port"].Value
-}
-
-function New-ProxyServerObject
-{
-    Param
-    (
-        [string]$Type,
-        [string]$Server,
-        [int]$Port
-    )
-        
     return New-Object -TypeName PSObject -Property @{
-        Type=$Type
-        Server=$Server
-        Port=$Port
+        Type=$Match.Groups["type"].Value
+        Server=$Match.Groups["server"].Value
+        Port=$Match.Groups["port"].Value
     }
 }
 
