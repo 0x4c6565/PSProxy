@@ -70,8 +70,6 @@ function Set-ProxyDirectives
         $ProxyDirectiveArray += "$($Type)=$($ProxyServerObject.$Type.Server):$($ProxyServerObject.$Type.Port)"
     }
     
-    Write-Host $ProxyDirectiveArray
-    
     Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name "ProxyServer" -Value ($ProxyDirectiveArray -join ";")
 }
 
