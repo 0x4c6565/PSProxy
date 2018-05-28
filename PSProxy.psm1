@@ -32,21 +32,25 @@ function Set-ProxyServer
     
     if ([string]::IsNullOrEmpty($HTTPProxyServer) -eq $false)
     {
+        Validate-PortNumber -Port $HTTPProxyPort
         $ProxyServerObject.http = @{Server=$HTTPProxyServer;Port=$HTTPProxyPort}
     }
     
     if ([string]::IsNullOrEmpty($HTTPSProxyServer) -eq $false)
     {
+        Validate-PortNumber -Port $HTTPSProxyPort
         $ProxyServerObject.https = @{Server=$HTTPSProxyServer;Port=$HTTPSProxyPort}
     }
     
     if ([string]::IsNullOrEmpty($FTPProxyServer) -eq $false)
     {
+        Validate-PortNumber -Port $FTPProxyPort
         $ProxyServerObject.ftp = @{Server=$FTPProxyServer;Port=$FTPProxyPort}
     }
     
     if ([string]::IsNullOrEmpty($SocksProxyServer) -eq $false)
     {
+        Validate-PortNumber -Port $SocksProxyPort
         $ProxyServerObject.socks = @{Server=$SocksProxyServer;Port=$SocksProxyPort}
     }
     
@@ -102,6 +106,14 @@ function Parse-ProxyDirective
         Type=$Match.Groups["type"].Value
         Server=$Match.Groups["server"].Value
         Port=$Match.Groups["port"].Value
+    }
+}
+
+function Validate-PortNumber([int]$Port)
+{    
+    if ($Port -lt 1 -or $Port -gt 65535)
+    {
+        throw "Invalid port number"
     }
 }
 
