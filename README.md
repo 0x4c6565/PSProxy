@@ -3,6 +3,11 @@ A simple powershell module for managing Windows proxy server settings
 
 ## Usage
 
+Turn proxy on/off
+```
+Set-ProxyEnabled [-Enabled <bool>]
+```
+
 Toggle proxy on/off
 ```
 Toggle-Proxy
