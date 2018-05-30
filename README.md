@@ -8,4 +8,4 @@ Toggle proxy on/off
 
 Set proxy server
 > Set-ProxyServer
-[-HTTPProxyServer <address>] [-HTTPProxyPort <port>] [-HTTPSProxyServer <address>] [-HTTPSProxyPort <port>] [-FTPProxyServer <address>] [-FTPProxyPort <port>] [-SocksProxyServer <address>] [-SocksProxyPort <port>] [-BypassLocalAddresses <bool>]
+> [-HTTPProxyServer <address>] [-HTTPProxyPort <port>] [-HTTPSProxyServer <address>] [-HTTPSProxyPort <port>] [-FTPProxyServer <address>] [-FTPProxyPort <port>] [-SocksProxyServer <address>] [-SocksProxyPort <port>] [-BypassLocalAddresses <bool>]
