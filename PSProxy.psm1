@@ -1,6 +1,8 @@
+$Script:InternetSettingsKey = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings"
+
 function Toggle-Proxy
 {
-    [bool]$ProxyEnabled = (Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name "ProxyEnable").ProxyEnable
+    [bool]$ProxyEnabled = (Get-ItemProperty -Path $Script:InternetSettingsKey -Name "ProxyEnable").ProxyEnable
     Set-ProxyEnabled -Enabled ($ProxyEnabled -ne $true)
 }
 
@@ -11,7 +13,7 @@ function Set-ProxyEnabled
         [bool]$Enabled
     )
     
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name "ProxyEnable" -Value ([int]$Enabled)
+    Set-ItemProperty -Path $Script:InternetSettingsKey -Name "ProxyEnable" -Value ([int]$Enabled)
 }
 
 function Set-ProxyOverideEnabled
@@ -21,20 +23,20 @@ function Set-ProxyOverideEnabled
         [bool]$Enabled
     )
 
-    $ProxyOverrideExists = ((Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings").ProxyOverride -eq "<local>")
+    $ProxyOverrideExists = ((Get-ItemProperty -Path $Script:InternetSettingsKey).ProxyOverride -eq "<local>")
 
     if ($Enabled)
     {
         if ($ProxyOverrideExists -eq $false)
         {
-            Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name "ProxyOverride" -Value "<local>"
+            Set-ItemProperty -Path $Script:InternetSettingsKey -Name "ProxyOverride" -Value "<local>"
         }
     }
     else
     {
         if ($ProxyOverrideExists)
         {
-            Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name "ProxyOverride"
+            Remove-ItemProperty -Path $Script:InternetSettingsKey -Name "ProxyOverride"
         }
     }
 }
@@ -103,7 +105,7 @@ function Set-ProxyDirectives
             $ProxyDirectiveArray += "$($Type)=$($ProxyServerObject.$Type.Server):$($ProxyServerObject.$Type.Port)"
         }
     
-        Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name "ProxyServer" -Value ($ProxyDirectiveArray -join ";")
+        Set-ItemProperty -Path $Script:InternetSettingsKey -Name "ProxyServer" -Value ($ProxyDirectiveArray -join ";")
     }
 }
 
@@ -111,12 +113,12 @@ function Parse-ProxyDirectives
 {    
     $ProxyServerObject = @{}
     
-    if ((Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings").ProxyServer -eq $null)
+    if ((Get-ItemProperty -Path $Script:InternetSettingsKey).ProxyServer -eq $null)
     {
         return $ProxyServerObject
     }
 
-    $ProxyServer = (Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name "ProxyServer").ProxyServer
+    $ProxyServer = (Get-ItemProperty -Path $Script:InternetSettingsKey -Name "ProxyServer").ProxyServer
     
     foreach ($Directive in $ProxyServer -split ";")
     {
